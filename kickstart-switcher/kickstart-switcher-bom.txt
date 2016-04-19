@@ -1,0 +1,10 @@
+REF         PART DESCRIPTION                   RS ORDER
+===         ================                   ========
+C1          22uF MLCC (0805)                   820-2765
+C2,C3,C5    0.1uF MLCC (0805)                  390-990
+C4          4.7uF Tantalum (2012)              547-9760
+R1,R2       1K 5% (0805)                       
+R3,R4       1M 5% (0805)                       618-3729
+Q1          N-Channel MOSFET (SOT-23)          780-4742
+U1          74HC74 (SOIC)                      526-347
+U2          74HC14 (SOIC)                      526-577
