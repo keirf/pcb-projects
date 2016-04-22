@@ -15,5 +15,7 @@ Drill files:
  Drill Units:    Inches
  Zeros Format:   Suppress leading zeros
  Precision:      2:4
- Drill Options:  Minimal header
+ Drill Options:  Minimal header, Merge PTH/NPTH
  Drill Origin:   Absolute
+
+Rename Edge Cuts layer *.gm1 -> *.gml
