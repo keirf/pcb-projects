@@ -112,13 +112,13 @@ as follows:
 On Windows you will have to find your own way!
 
 Plug my adapter into the TL866 and set the jumpers to
-A18=A19=0. Select device '27C4096', deselect 'check device id' and set
-Vpp=12.5V (optional, but seems to work and closer to 27C160
+`A19/A18=0/0`. Select device `27C4096`, deselect `Check ID` and set
+`VPP Voltage 12.50V` (optional, but seems to work and closer to 27C160
 specs). Insert the EPROM into the adapter. Load your default ROM image
 and program the EPROM.
 
-Now load your second ROM image, select A19/A18=0/1 (on 27C800) or
-A19/A18=1/0 (on 27C160, this is just more convenient as A19 pin is on
+Now load your second ROM image, select `A19/A18=0/1` (27C800) or
+`A19/A18=1/0` (27C160, for convenience as A19 pin is on
 the same side of the EPROM as the adapter's Sel output pin). Program
 the EPROM.
 
