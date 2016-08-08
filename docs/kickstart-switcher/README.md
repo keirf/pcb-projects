@@ -117,19 +117,17 @@ Plug my adapter into the TL866 and set the jumpers to
 specs). Insert the EPROM into the adapter. Load your default ROM image
 and program the EPROM.
 
-Now load your second ROM image, select `A19/A18=0/1` (27C800) or
-`A19/A18=1/0` (27C160, for convenience as A19 pin is on
-the same side of the EPROM as the adapter's Sel output pin). Program
+Now load your second ROM image, select `A19/A18=0/1`, and program
 the EPROM.
 
 
 ## Physically modifying the EPROM
 
-The EPROM must be physically modified to support the Kickstart
-switcher, as pictured.
-![Modified 27C160](assets/15_modified_27c160.jpg)
+The 27C800/27C160 must be physically modified to support the Kickstart
+switcher. In the below steps you can ignore pin 42 on 27C800, or even
+cut it off entirely, as it's unused.
 
-### 27C160 Modifications
+![Modified 27C160 EPROM](assets/15_modified_27c160.jpg)
 
 1. Lift pins 1 (A18) and 42 (A19). Optionally cut them short
    (but with enough left to solder onto).
@@ -146,31 +144,7 @@ Pre-programmed EPROMs are supplied with tape already installed.
 
 5. Connect pin 22 (VCC) to P1:Vcc on the switcher.
 
-6. Connect pin 31 (VSS) to P1:Gnd on the switcher.
-
-7. Connect pin 42 (A19) to P1:Sel on the switcher.
-
-8. Connect pin 1 (A18) to pin 12 (VSS). This ties A18=0.
-
-### 27C800 Modifications
-
-1. Lift pins 1 (A18) and 42 (NC). Optionally cut A18 short (but with
-   enough left to solder onto). You may cut off pin 42 completely if
-   you want to.
-
-2. Flux pins 1, 22, 31.
-
-3. Apply solder to all fluxed pins and then attach a short piece of
-hookup wire ('Kynar' wire, or a strand from an ATA 80 ribbon cable is
-appropriate here) to each one.
-
-4. Attach the switcher to the top of the EPROM with glue or
-double-sided tape with header P1 on the right-hand side.
-Pre-programmed EPROMs are supplied with tape already installed.
-
-5. Connect pin 22 (VCC) to P1:Vcc on the switcher.
-
-6. Connect pin 31 (VSS) to P1:Gnd on the switcher.
+6. Connect pin 31 (VSS) and pin 42 (A19) to P1:Gnd on the switcher.
 
 7. Connect pin 1 (A18) to P1:Sel on the switcher.
 
