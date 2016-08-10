@@ -1,7 +1,5 @@
 # Piggybacked Kickstart Switcher, v1.0
 
-Keir Fraser, 15th May 2016
-
 ## How to use this guide
 
 If you have received this switcher in kit form then please read these

@@ -1,5 +1,9 @@
 # PCB-Projects: KiCad Designs for Retro Projects
 
-[Kickstart Switcher](/docs/kickstart-switcher/README.md)
 
-[EPROM Adapter](/docs/eprom-adapter/README.md)
+## Documentation
+
+- [**Kickstart Switcher**](/docs/kickstart-switcher/README.md)
+  Assembly instructions and installation guide
+- [**EPROM Adapter**](/docs/eprom-adapter/README.md)
+  Usage instructions for all versions of this adapter
