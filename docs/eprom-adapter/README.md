@@ -43,3 +43,25 @@ a time, as configured by the bank-switching handled jumpers:
 - **27C322:** program in 8 512kB passes: A20/A19/A18=000,001,010,011,100,101,110,111 (banks 1,2,3,4,5,6,7,8)
 
 ![Jumper configuration](assets/jumpers.jpg)
+
+## Troubleshooting
+
+If you suffer write or verify errors when programming, try these steps:
+
+1. Make sure the EPROM is fully blank before programming it (`Device
+-> Blank Check`). All EPROMs available today are second-hand 'pulls'
+and sellers aren't always careful when erasing before resale.
+
+2. Open and close the adapter's ZIF lever a few times, and reposition
+the EPROM squarely in the socket.
+
+3. Try raising `VPP Voltage` to 13.50V. Although out of specification
+according to most datasheets, I have subjectively had greater success
+in programming EPROMs at this voltage and have not damaged any
+parts.
+
+4. Programming errors will occur from time to time, and of course the
+chances increase the larger the device. It makes sense to invest in a
+UV eraser. These are available at low cost on Ebay from the Far East
+for around £10-15 ($15-20). Most devices will be erased after 10 or 20
+minutes under UV light.
