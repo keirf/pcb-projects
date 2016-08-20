@@ -30,10 +30,9 @@ only** when programming 27C322 parts.
 
 ![Adapter when in use](assets/adapter_in_use.jpg)
 
-Launch the MiniPro software, select `AMD 27C4096 DIP40` device, and deselect
-`Check ID`. You may also optionally reduce `VPP Voltage` to `12.50V`,
-however I personally see fewer programming errors at the `13.50V`
-default and so I usually leave this setting unchanged.
+Launch the MiniPro software, select `AMD 27C4096 DIP40` device, and
+deselect `Check ID`. You may also optionally reduce `VPP Voltage` to
+`12.50V`, depending on your EPROM's datasheet and programming success.
 
 ![MiniPro Software Configuration](assets/minipro.jpg)
 
@@ -57,10 +56,10 @@ and sellers aren't always careful when erasing before resale.
 2. Open and close the adapter's ZIF lever a few times, and reposition
 the EPROM squarely in the socket.
 
-3. If you reduced `VPP Voltage` then try increasing it back to the
-default `13.50V`. Although it's out of specification according to most
-datasheets, I have personally had fewer programming errors at this
-voltage and no adverse effects.
+3. Try adjusting `VPP Voltage` between `12.50V` and
+`13.50V`. Subjectively I have had greater success at the higher
+voltage and it gives headroom for voltage losses in transferring VPP
+through the adapter's logic.
 
 4. Programming errors will occur from time to time, and of course the
 chances increase the larger the device. It makes sense to invest in a
