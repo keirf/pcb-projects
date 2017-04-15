@@ -18,6 +18,14 @@ to contemporary DIP-packaged mask ROMs) to 27C4096 pin-out as
 supported by the readily-available and cheap TL866 series of USB
 programmers.
 
+## Assembly
+
+If you received a kit of parts for self assembly, refer to the picture
+below for a general idea of how things fit together. Note that the 1K
+resistor belongs at location R3 (marked 'Base') and that one of the
+10K resistors is soldered to the underside of the PCB. Also take care
+to install the push switch the correct way round.
+
 ## Usage
 
 Insert the programming adapter into the TL866 with the socket
