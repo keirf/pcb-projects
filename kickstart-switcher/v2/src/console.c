@@ -9,7 +9,7 @@
  * See the file COPYING for more details, or visit <http://unlicense.org>.
  */
 
-#define BAUD 57600
+#define BAUD 115200
 
 #define DMA1_CH4_IRQ 14
 void IRQ_14(void) __attribute__((alias("IRQ_dma1_ch4_tc")));

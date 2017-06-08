@@ -1,4 +1,4 @@
-# Piggybacked Kickstart Switcher, v2.0
+# Piggybacked Kickstart Switcher, v2.1
 
 ## How to use this guide
 
@@ -66,13 +66,9 @@ contains a number of HEX programming files, one for each possible
 number of ROM images (2 through 8). On Linux the firmware can now be
 programmed with the stm32flash command-line utility:
 ```
- # unzip fw.zip
- # sudo stm32flash -vw fw/kswitch_N.hex /dev/ttyUSB0
+ # unzip kswitch_v2.zip
+ # sudo stm32flash -vw kswitch_v2/kswitch.hex /dev/ttyUSB0
 ```
-
-Where `N` is the number of selectable Kickstart images, and
-`dev/ttyUSB0` is the device name selected by the Linux kernel for your
-USB-TTL adapter.
 
 Once the device is programmed you can remove the boot and debug
 headers. The boot-select pins should be forced to 00 by bridging the
@@ -85,6 +81,15 @@ If fitting to an A500 with its top shield intact you may also wish to
 remove the USB socket. The mounting tabs can be snipped with small
 side cutters and the socket then gently pulled off.
 
+Finally, you must configure the firmware via the serial line. To do
+this, connect to the USB-serial line via a dumb serial terminal at
+115200,8n1, and reset the STM32 board. On Linux, for example:
+```
+ # sudo miniterm.py /dev/ttyUSB0 115200
+ > 1
+ > <your number of images>
+ > 9
+```
 
 ## Programming the EPROM
 

@@ -19,7 +19,6 @@
 #define ARR 499
 
 /* Three volume settings, default is medium. PB5 selects others. */
-static const unsigned int volumes[] = { 10, 30, 80 };
 static unsigned int volume = 1;
 
 static struct timer spk_timer;
@@ -33,7 +32,7 @@ static void spk_timer_fn(void *data)
         ccr = 0;
         next = stk_ms(120);
     } else {
-        ccr = volumes[volume];
+        ccr = ksw_config.volumes[volume];
         next = stk_ms(30);
     }
     gpio_write_pin(gpioc, 13, !ccr); /* PC13 LED */
@@ -45,20 +44,12 @@ static void spk_timer_fn(void *data)
 void speaker_init(void)
 {
     /* Probe volume setting. */
-    gpio_configure_pin(gpiob, 6, GPI_pull_up);
-    gpio_configure_pin(gpiob, 5, GPO_pushpull(_2MHz, LOW));
-    gpio_configure_pin(gpiob, 7, GPO_pushpull(_2MHz, HIGH));
-    delay_ms(1);
-    if (!gpio_read_pin(gpiob, 6)) {
+    if (gpio_pins_connected(gpiob, 6, gpiob, 5)) {
         /* PB6 jumpered to PB5 -> low volume */
         volume = 0;
-    } else {
-        gpio_configure_pin(gpiob, 7, GPO_pushpull(_2MHz, LOW));
-        delay_ms(1);
-        if (!gpio_read_pin(gpiob, 6)) {
-            /* PB6 jumpered to PB7 -> high volume */
-            volume = 2;
-        }
+    } else if (gpio_pins_connected(gpiob, 6, gpiob, 7)) {
+        /* PB6 jumpered to PB7 -> high volume */
+        volume = 2;
     }
    
     /* Set up timer, switch speaker off. PWM output is active high. */

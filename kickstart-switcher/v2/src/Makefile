@@ -1,3 +1,4 @@
+OBJS += config.o
 OBJS += console.o
 OBJS += main.o
 OBJS += speaker.o

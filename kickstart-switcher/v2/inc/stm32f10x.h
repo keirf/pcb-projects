@@ -65,6 +65,7 @@ extern uint32_t vector_table[];
 
 /* System */
 void stm32_init(void);
+void stm32_bootloader_enter(void);
 void system_reset(void);
 
 /* Clocks */
@@ -114,6 +115,13 @@ void gpio_configure_pin(GPIO gpio, unsigned int pin, unsigned int mode);
 #define gpio_write_pins(gpio, mask, level) \
     ((gpio)->bsrr = (uint32_t)(mask) << ((level) ? 0 : 16))
 #define gpio_read_pin(gpio, pin) (((gpio)->idr >> (pin)) & 1)
+bool_t gpio_pins_connected(GPIO gpio1, unsigned int pin1,
+                           GPIO gpio2, unsigned int pin2);
+
+/* FPEC */
+void fpec_init(void);
+void fpec_page_erase(uint32_t flash_address);
+void fpec_write(const void *data, unsigned int size, uint32_t flash_address);
 
 /*
  * Local variables:

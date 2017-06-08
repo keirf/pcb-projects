@@ -49,6 +49,8 @@ int strncmp(const char *s1, const char *s2, size_t n);
 char *strrchr(const char *s, int c);
 int tolower(int c);
 
+uint16_t crc16_ccitt(const void *buf, size_t len, uint16_t crc);
+
 int vsnprintf(char *str, size_t size, const char *format, va_list ap)
     __attribute__ ((format (printf, 3, 0)));
 
@@ -72,6 +74,19 @@ void console_sync(void);
 
 void speaker_init(void);
 void speaker_pulses(uint8_t nr);
+
+void rom_bank_set(unsigned int bank);
+
+/* Configuration. */
+void config_init(void);
+extern struct ksw_config {
+    uint8_t reset_delays[3]; /* reset delay to switch (/0.05s) */
+    uint8_t volumes[3];      /* beeper volume */
+    uint8_t nr_images;       /* # images to cycle between */
+    uint8_t image_map[8];    /* which rom bank addressed by each image # */
+    uint8_t menu_rom_bank;   /* which rom bank addressed during menu */
+    uint16_t crc16_ccitt;
+} ksw_config;
 
 /* Text/data/BSS address ranges. */
 extern char _stext[], _etext[];
