@@ -1,4 +1,4 @@
-# Piggybacked Kickstart Switcher, v2.1
+# Piggybacked Kickstart Switcher, v2
 
 ## How to use this guide
 

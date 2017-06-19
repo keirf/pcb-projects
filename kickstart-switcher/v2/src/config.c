@@ -58,7 +58,7 @@ static unsigned int console_get_uint(void)
         while (!(usart1->sr & USART_SR_RXNE))
             continue;
         c = usart1->dr;
-        if (c == '\n') /* CR */ {
+        if (c == '\r') /* CR */ {
             if (i == 0)
                 continue;
             break;
@@ -89,7 +89,7 @@ void config_init(void)
     unsigned int x;
     int i;
 
-    printk("\n** Kickstart Switcher v2.1 **\n");
+    printk("\n** Kickstart Switcher v2.2 **\n");
     printk("** Keir Fraser <keir.xen@gmail.com>\n");
     printk("** https://github.com/keirf/PCB-Projects\n");
 
