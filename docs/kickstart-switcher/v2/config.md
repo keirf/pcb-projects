@@ -37,8 +37,10 @@ pins: White to GND, Black to 5V, Purple to RXD, Blue to TXD.
 
 ![Programming the STM32](assets/20_programming_stm32.jpg)
 
-Connect to the console via a dumb serial terminal at 115200 baud, 8
-data, no parity, 1 stop bit. For example, on Linux:
+Connect to the console via a serial terminal at 115200 baud, 8
+data bits, no parity, 1 stop bit. On Windows you could
+use PuTTY, among many other options. On Linux, you can use Python's
+miniterm utility:
 ```
  # sudo miniterm.py /dev/ttyUSB0 115200
  ```

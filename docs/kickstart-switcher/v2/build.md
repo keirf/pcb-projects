@@ -48,9 +48,11 @@ If fitting to an A500 with its top shield intact you may also wish to
 remove the USB socket. The mounting tabs can be snipped with small
 side cutters and the socket then gently pulled off.
 
-Finally, you must configure the firmware via the serial line. To do
-this, connect to the USB-serial line via a dumb serial terminal at
-115200,8n1, and reset the STM32 board. On Linux, for example:
+Finally, you must configure the firmware via the serial line. Connect
+to the console via a serial terminal at 115200 baud, 8 data bits, no
+parity, 1 stop bit, and reset the STM32 board. On Windows you could
+use PuTTY, among many other options. On Linux, you can use Python's
+miniterm utility:
 ```
  # sudo miniterm.py /dev/ttyUSB0 115200
  > 1
