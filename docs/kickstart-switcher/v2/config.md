@@ -27,7 +27,14 @@ The switcher includes a setup menu accessible via serial line. To
 access this feature, **first remove the switcher from your Amiga**.
 
 Wire up a USB-TTL serial adapter, such as shown below. These are
-available for around £1 on Ebay.
+available for around £1 on Ebay. My own experience is with the
+PL2303HX-based adapters, which are automatically detected and
+initialised in Linux. In Windows the correct Prolific driver is
+installed, but since the cheap adapters are using cloned chips, the
+driver may fail to initialise the device. In this case the driver must
+be replaced by an older version and auto-update disabled for the
+driver, as described
+[here](http://www.totalcardiagnostics.com/support/Knowledgebase/Article/View/92/20/prolific-usb-to-serial-fix-official-solution-to-code-10-error).
 
 ![Example USB-TTL serial adapter](assets/22_usbttl.jpg)
 

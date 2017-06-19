@@ -17,7 +17,14 @@ the headers are installed straight and even.
 ![Header pins soldered to the STM32 board](assets/10_angled_headers_added.jpg)
 
 Next we program the STM32. You will need a USB-TTL adapter such as
-shown below. These are available for around £1 on Ebay.
+shown below, available for around £1 on Ebay. My own
+experience is with the PL2303HX-based adapters, which are
+automatically detected and initialised in Linux. In Windows the
+correct Prolific driver is installed, but since the cheap adapters are
+using cloned chips, the driver may fail to initialise the device. In
+this case the driver must be replaced by an older version and
+auto-update disabled for the driver, as described
+[here](http://www.totalcardiagnostics.com/support/Knowledgebase/Article/View/92/20/prolific-usb-to-serial-fix-official-solution-to-code-10-error).
 
 ![Example USB-TTL serial adapter](assets/22_usbttl.jpg)
 
