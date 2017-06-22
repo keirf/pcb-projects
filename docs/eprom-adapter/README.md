@@ -24,7 +24,9 @@ If you received a kit of parts for self assembly, refer to the picture
 below for a general idea of how things fit together. Note that the 1K
 resistor belongs at location R3 (marked 'Base') and that one of the
 10K resistors is soldered to the underside of the PCB. Also take care
-to install the push switch the correct way round.
+to install the push switch the correct way round (see picture).
+
+![Correct switch orientation](assets/switch_orientation.jpg)
 
 ## Usage
 
