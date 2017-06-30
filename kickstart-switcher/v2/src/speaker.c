@@ -56,10 +56,10 @@ void speaker_init(void)
     rcc->apb1enr |= RCC_APB1ENR_TIM4EN;
     tim->arr = ARR;
     tim->psc = SYSCLK_MHZ - 1; /* tick at 1MHz */
-    tim->ccer = TIM_CCER_CC3E;
     tim->ccmr2 = (TIM_CCMR2_CC3S(TIM_CCS_OUTPUT) |
                   TIM_CCMR2_OC3M(TIM_OCM_PWM1)); /* PWM1: high then low */
     tim->PWM_CCR = tim->cr2 = tim->dier = 0;
+    tim->ccer = TIM_CCER_CC3E;
     tim->cr1 = TIM_CR1_CEN;
 
     /* Set up the output pin. */
@@ -73,7 +73,6 @@ void speaker_init(void)
 void speaker_pulses(uint8_t nr)
 {
     /* Quadratic scaling of pulse width seems to give linear-ish volume. */
-    tim->PWM_CCR = 250;
     nr_pulses = nr*2;
     timer_set(&spk_timer, stk_now());
 }
