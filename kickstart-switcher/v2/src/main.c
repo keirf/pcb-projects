@@ -23,41 +23,47 @@
 
 int EXC_reset(void) __attribute__((alias("main")));
 
+/* Guard the stacks with known values. */
 static void canary_init(void)
 {
     _irq_stackbottom[0] = _thread_stackbottom[0] = 0xdeadbeef;
 }
 
+/* Has either stack been clobbered? */
 static void canary_check(void)
 {
     ASSERT(_irq_stackbottom[0] == 0xdeadbeef);
     ASSERT(_thread_stackbottom[0] == 0xdeadbeef);
 }
 
+/* Sample the reset line this frequently. */
 #define TICK_PERIOD stk_ms(50)
 static struct timer tick_timer;
-static volatile unsigned int ticks, nr_updates;
 
+/* Number of image switches that main thread has pending to apply. */
+static volatile unsigned int nr_switches;
+
+/* Switch delay time: 0 = small, 1 = medium (default), 2 = long. */
 static unsigned int switch_delay = 1; /* medium delay */
 
 static void tick_fn(void *data)
 {
+    /* How many consecutive samples have been in reset? */
     static unsigned int reset_ticks = 0;
-    static int prev_reset = 0;
-    int curr_reset = !gpio_read_pin(gpioa, 8);
-    if (prev_reset == curr_reset) { /* debounce */
-        if (curr_reset) {
-            if (++reset_ticks == (ksw_config.reset_delays[switch_delay])) {
-                nr_updates++;
-                reset_ticks = 0;
-            }
-        } else {
+
+    /* Are we in reset now (ie. PA8 low)? */
+    if (!gpio_read_pin(gpioa, 8)) {
+        /* If so, update our sample count and check if we're at threshold. */
+        if (++reset_ticks == (ksw_config.reset_delays[switch_delay])) {
+            /* If we're at threshold inform main thread and restart count. */
+            nr_switches++;
             reset_ticks = 0;
         }
+    } else {
+        /* We're not in reset. Clear the count. */
+        reset_ticks = 0;
     }
-    prev_reset = curr_reset;
 
-    ticks++;
     timer_set(&tick_timer, stk_diff(tick_timer.deadline, TICK_PERIOD));
 }
 
@@ -121,10 +127,10 @@ int main(void)
 
     for (;;) {
         canary_check();
-        if (!nr_updates)
+        if (!nr_switches)
             continue;
-        kickstart = ((kickstart + nr_updates - 1) % ksw_config.nr_images) + 1;
-        nr_updates = 0;
+        kickstart = ((kickstart + nr_switches - 1) % ksw_config.nr_images) + 1;
+        nr_switches = 0;
         speaker_pulses(kickstart);
         image_set(kickstart);
     }
