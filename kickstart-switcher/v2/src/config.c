@@ -89,7 +89,7 @@ void config_init(void)
     unsigned int x;
     int i;
 
-    printk("\n** Kickstart Switcher v2.3 **\n");
+    printk("\n** Kickstart Switcher v2.4 **\n");
     printk("** Keir Fraser <keir.xen@gmail.com>\n");
     printk("** https://github.com/keirf/PCB-Projects\n");
 
