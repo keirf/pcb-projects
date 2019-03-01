@@ -85,7 +85,7 @@ static void image_set(unsigned int image)
 
 int main(void)
 {
-    unsigned int i, kickstart = 1;
+    unsigned int i, kickstart;
 
     /* Relocate DATA. Initialise BSS. */
     if (_sdat != _ldat)
@@ -96,6 +96,7 @@ int main(void)
 
     stm32_init();
     timers_init();
+    recall_init();
     console_init();
     speaker_init();
 
@@ -123,6 +124,7 @@ int main(void)
     timer_init(&tick_timer, tick_fn, NULL);
     timer_set(&tick_timer, stk_deadline(TICK_PERIOD));
 
+    kickstart = recall_get();
     image_set(kickstart);
 
     for (;;) {
@@ -131,6 +133,7 @@ int main(void)
             continue;
         kickstart = ((kickstart + nr_switches - 1) % ksw_config.nr_images) + 1;
         nr_switches = 0;
+        recall_set(kickstart);
         speaker_pulses(kickstart);
         image_set(kickstart);
     }

@@ -9,12 +9,13 @@
  * See the file COPYING for more details, or visit <http://unlicense.org>.
  */
 
-const static struct ksw_config *flash_config = (struct ksw_config *)0x08008000;
+const static struct ksw_config *flash_config = (struct ksw_config *)0x08007c00;
 const static struct ksw_config dfl_config = {
     .reset_delays = { 2*20, 3*20, 4*20 }, /* 2s, 3s, 4s */
     .volumes = { 10, 30, 80 },
     .nr_images = 2,
     .image_map = { 0, 1, 2, 3, 4, 5, 6, 7 },
+    .image_recall = FALSE,
     .menu_rom_bank = 0
 };
 struct ksw_config ksw_config;
@@ -36,6 +37,7 @@ static void config_printk(const struct ksw_config *conf)
            conf->volumes[0],
            conf->volumes[1],
            conf->volumes[2]);
+    printk(" Image recall: %sabled\n", conf->image_recall ? "En" : "Dis");
     printk(" Menu ROM bank: %u\n\n", conf->menu_rom_bank);
 }
 
@@ -45,6 +47,7 @@ static void config_write_flash(struct ksw_config *conf)
         crc16_ccitt(conf, sizeof(*conf)-2, 0xffff));
     fpec_init();
     fpec_page_erase((uint32_t)flash_config);
+    recall_erase();
     fpec_write(conf, sizeof(*conf), (uint32_t)flash_config);
 }
 
@@ -89,7 +92,7 @@ void config_init(void)
     unsigned int x;
     int i;
 
-    printk("\n** Kickstart Switcher v2.4 **\n");
+    printk("\n** Kickstart Switcher v2.5 **\n");
     printk("** Keir Fraser <keir.xen@gmail.com>\n");
     printk("** https://github.com/keirf/PCB-Projects\n");
 
@@ -119,7 +122,8 @@ void config_init(void)
         printk(" 2: Image map\n");
         printk(" 3: Reset delays\n");
         printk(" 4: Speaker volumes\n");
-        printk(" 5: Menu ROM bank\n");
+        printk(" 5: Image recall\n");
+        printk(" 6: Menu ROM bank\n");
         printk(" --\n");
         printk(" 7: Load defaults\n");
         printk(" 8: Discard & reset\n");
@@ -168,6 +172,13 @@ void config_init(void)
             }
             break;
         case 5:
+            do {
+                printk("Image recall (0=Disable, 1=Enable): ");
+                x = console_get_uint();
+            } while (x > 1);
+            ksw_config.image_recall = x;
+            break;
+        case 6:
             do {
                 printk("Menu ROM bank (0-7): ");
                 x = console_get_uint();

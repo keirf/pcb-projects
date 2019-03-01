@@ -77,6 +77,11 @@ void speaker_pulses(uint8_t nr);
 
 void rom_bank_set(unsigned int bank);
 
+void recall_init(void);
+unsigned int recall_get(void);
+void recall_set(unsigned int image);
+void recall_erase(void);
+
 /* Configuration. */
 void config_init(void);
 extern struct ksw_config {
@@ -85,6 +90,7 @@ extern struct ksw_config {
     uint8_t nr_images;       /* # images to cycle between */
     uint8_t image_map[8];    /* which rom bank addressed by each image # */
     uint8_t menu_rom_bank;   /* which rom bank addressed during menu */
+    uint8_t image_recall;    /* remember last image across reset/power-off? */
     uint16_t crc16_ccitt;
 } ksw_config;
 
