@@ -275,7 +275,7 @@ bool_t gpio_pins_connected(GPIO gpio1, unsigned int pin1,
     /* Test if pin2 can pull pin1 high... */
     gpio_configure_pin(gpio1, pin1, GPI_pull_down);
     gpio_configure_pin(gpio2, pin2, GPO_pushpull(_2MHz, HIGH));
-    delay_ms(1);
+    delay_us(5);
     /* ...if so, the pins are indeed connected. */
     connected = gpio_read_pin(gpio1, pin1);
     /* Return pins to their default configuration. */
