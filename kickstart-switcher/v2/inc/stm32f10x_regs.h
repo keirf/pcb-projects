@@ -1,4 +1,3 @@
-
 /*
  * stm32f10x_regs.h
  * 
@@ -343,63 +342,17 @@ struct dma {
     struct dma_chn ch7;  /* 80: Channel 7 */
 };
 
-#define DMA_ISR_TEIF7        (1u<<27)
-#define DMA_ISR_HTIF7        (1u<<26)
-#define DMA_ISR_TCIF7        (1u<<25)
-#define DMA_ISR_GIF7         (1u<<24)
-#define DMA_ISR_TEIF6        (1u<<23)
-#define DMA_ISR_HTIF6        (1u<<22)
-#define DMA_ISR_TCIF6        (1u<<21)
-#define DMA_ISR_GIF6         (1u<<20)
-#define DMA_ISR_TEIF5        (1u<<19)
-#define DMA_ISR_HTIF5        (1u<<18)
-#define DMA_ISR_TCIF5        (1u<<17)
-#define DMA_ISR_GIF5         (1u<<16)
-#define DMA_ISR_TEIF4        (1u<<15)
-#define DMA_ISR_HTIF4        (1u<<14)
-#define DMA_ISR_TCIF4        (1u<<13)
-#define DMA_ISR_GIF4         (1u<<12)
-#define DMA_ISR_TEIF3        (1u<<11)
-#define DMA_ISR_HTIF3        (1u<<10)
-#define DMA_ISR_TCIF3        (1u<< 9)
-#define DMA_ISR_GIF3         (1u<< 8)
-#define DMA_ISR_TEIF2        (1u<< 7)
-#define DMA_ISR_HTIF2        (1u<< 6)
-#define DMA_ISR_TCIF2        (1u<< 5)
-#define DMA_ISR_GIF2         (1u<< 4)
-#define DMA_ISR_TEIF1        (1u<< 3)
-#define DMA_ISR_HTIF1        (1u<< 2)
-#define DMA_ISR_TCIF1        (1u<< 1)
-#define DMA_ISR_GIF1         (1u<< 0)
+/* n=1..7 */
+#define DMA_ISR_TEIF(n)      (8u<<(((n)-1)*4))
+#define DMA_ISR_HTIF(n)      (4u<<(((n)-1)*4))
+#define DMA_ISR_TCIF(n)      (2u<<(((n)-1)*4))
+#define DMA_ISR_GIF(n)       (1u<<(((n)-1)*4))
 
-#define DMA_IFCR_CTEIF7      (1u<<27)
-#define DMA_IFCR_CHTIF7      (1u<<26)
-#define DMA_IFCR_CTCIF7      (1u<<25)
-#define DMA_IFCR_CGIF7       (1u<<24)
-#define DMA_IFCR_CTEIF6      (1u<<23)
-#define DMA_IFCR_CHTIF6      (1u<<22)
-#define DMA_IFCR_CTCIF6      (1u<<21)
-#define DMA_IFCR_CGIF6       (1u<<20)
-#define DMA_IFCR_CTEIF5      (1u<<19)
-#define DMA_IFCR_CHTIF5      (1u<<18)
-#define DMA_IFCR_CTCIF5      (1u<<17)
-#define DMA_IFCR_CGIF5       (1u<<16)
-#define DMA_IFCR_CTEIF4      (1u<<15)
-#define DMA_IFCR_CHTIF4      (1u<<14)
-#define DMA_IFCR_CTCIF4      (1u<<13)
-#define DMA_IFCR_CGIF4       (1u<<12)
-#define DMA_IFCR_CTEIF3      (1u<<11)
-#define DMA_IFCR_CHTIF3      (1u<<10)
-#define DMA_IFCR_CTCIF3      (1u<< 9)
-#define DMA_IFCR_CGIF3       (1u<< 8)
-#define DMA_IFCR_CTEIF2      (1u<< 7)
-#define DMA_IFCR_CHTIF2      (1u<< 6)
-#define DMA_IFCR_CTCIF2      (1u<< 5)
-#define DMA_IFCR_CGIF2       (1u<< 4)
-#define DMA_IFCR_CTEIF1      (1u<< 3)
-#define DMA_IFCR_CHTIF1      (1u<< 2)
-#define DMA_IFCR_CTCIF1      (1u<< 1)
-#define DMA_IFCR_CGIF1       (1u<< 0)
+/* n=1..7 */
+#define DMA_IFCR_CTEIF(n)    (8u<<(((n)-1)*4))
+#define DMA_IFCR_CHTIF(n)    (4u<<(((n)-1)*4))
+#define DMA_IFCR_CTCIF(n)    (2u<<(((n)-1)*4))
+#define DMA_IFCR_CGIF(n)     (1u<<(((n)-1)*4))
 
 #define DMA_CCR_MEM2MEM      (1u<<14)
 #define DMA_CCR_PL_LOW       (0u<<12)
@@ -501,6 +454,11 @@ struct tim {
 #define TIM_CCMR1_OC1FE      (1u << 2)
 #define TIM_CCMR1_CC1S(x)    ((x)<< 0)
 
+#define TIM_CCMR1_IC2F(x)    ((x)<<12)
+#define TIM_CCMR1_IC2PSC(x)  ((x)<<10)
+#define TIM_CCMR1_IC1F(x)    ((x)<< 4)
+#define TIM_CCMR1_IC1PSC(x)  ((x)<< 2)
+
 #define TIM_CCMR2_OC4CE      (1u <<15)
 #define TIM_CCMR2_OC4M(x)    ((x)<<12)
 #define TIM_CCMR2_OC4PE      (1u <<11)
@@ -511,6 +469,11 @@ struct tim {
 #define TIM_CCMR2_OC3PE      (1u << 3)
 #define TIM_CCMR2_OC3FE      (1u << 2)
 #define TIM_CCMR2_CC3S(x)    ((x)<< 0)
+
+#define TIM_CCMR2_IC4F(x)    ((x)<<12)
+#define TIM_CCMR2_IC4PSC(x)  ((x)<<10)
+#define TIM_CCMR2_IC3F(x)    ((x)<< 4)
+#define TIM_CCMR2_IC3PSC(x)  ((x)<< 2)
 
 #define TIM_OCM_FROZEN       (0u)
 #define TIM_OCM_SET_HIGH     (1u)
@@ -609,6 +572,74 @@ struct spi {
 #define SPI1_BASE 0x40013000
 #define SPI2_BASE 0x40003800
 #define SPI3_BASE 0x40003C00
+
+/* I2C */
+struct i2c {
+    uint32_t cr1;     /* 00: Control 1 */
+    uint32_t cr2;     /* 04: Control 2 */
+    uint32_t oar1;    /* 08: Own address 1 */
+    uint32_t oar2;    /* 0C: Own address 2 */
+    uint32_t dr;      /* 10: Data */
+    uint32_t sr1;     /* 14: Status 1 */
+    uint32_t sr2;     /* 18: Status 2 */
+    uint32_t ccr;     /* 1C: Clock control */
+    uint32_t trise;   /* 20: Rise time */
+};
+
+#define I2C_CR1_SWRST     (1u<<15)
+#define I2C_CR1_ALERT     (1u<<13)
+#define I2C_CR1_PEC       (1u<<12)
+#define I2C_CR1_POS       (1u<<11)
+#define I2C_CR1_ACK       (1u<<10)
+#define I2C_CR1_STOP      (1u<< 9)
+#define I2C_CR1_START     (1u<< 8)
+#define I2C_CR1_NOSTRETCH (1u<< 7)
+#define I2C_CR1_ENGC      (1u<< 6)
+#define I2C_CR1_ENPEC     (1u<< 5)
+#define I2C_CR1_ENARP     (1u<< 4)
+#define I2C_CR1_SMBTYPE   (1u<< 3)
+#define I2C_CR1_SMBUS     (1u<< 1)
+#define I2C_CR1_PE        (1u<< 0)
+
+#define I2C_CR2_LAST      (1u<<12)
+#define I2C_CR2_DMAEN     (1u<<11)
+#define I2C_CR2_ITBUFEN   (1u<<10)
+#define I2C_CR2_ITEVTEN   (1u<< 9)
+#define I2C_CR2_ITERREN   (1u<< 8)
+#define I2C_CR2_FREQ(x)   (x)
+
+#define I2C_SR1_SMBALERT  (1u<<15)
+#define I2C_SR1_TIMEOUT   (1u<<14)
+#define I2C_SR1_PECERR    (1u<<12)
+#define I2C_SR1_OVR       (1u<<11)
+#define I2C_SR1_AF        (1u<<10)
+#define I2C_SR1_ARLO      (1u<< 9)
+#define I2C_SR1_BERR      (1u<< 8)
+#define I2C_SR1_ERRORS    0xdf00
+#define I2C_SR1_TXE       (1u<< 7)
+#define I2C_SR1_RXNE      (1u<< 6)
+#define I2C_SR1_STOPF     (1u<< 4)
+#define I2C_SR1_ADD10     (1u<< 3)
+#define I2C_SR1_BTF       (1u<< 2)
+#define I2C_SR1_ADDR      (1u<< 1)
+#define I2C_SR1_SB        (1u<< 0)
+#define I2C_SR1_EVENTS    0x001f
+
+#define I2C_SR2_PEC(x)    ((x)<<15)
+#define I2C_SR2_DUALF     (1u<< 7)
+#define I2C_SR2_SMBHOST   (1u<< 6)
+#define I2C_SR2_SMBDEFAULT (1u<< 5)
+#define I2C_SR2_GENCALL   (1u<< 4)
+#define I2C_SR2_TRA       (1u<< 2)
+#define I2C_SR2_BUSY      (1u<< 1)
+#define I2C_SR2_MSL       (1u<< 0)
+
+#define I2C_CCR_FS        (1u<<15)
+#define I2C_CCR_DUTY      (1u<<14)
+#define I2C_CCR_CCR(x)    (x)
+
+#define I2C1_BASE 0x40005400
+#define I2C2_BASE 0x40005800
 
 /* USART */
 struct usart {

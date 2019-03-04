@@ -30,15 +30,15 @@ static void spk_timer_fn(void *data)
 
     if (nr_pulses & 1) {
         ccr = 0;
-        next = stk_ms(120);
+        next = time_ms(120);
     } else {
         ccr = ksw_config.volumes[volume];
-        next = stk_ms(30);
+        next = time_ms(30);
     }
     gpio_write_pin(gpioc, 13, !ccr); /* PC13 LED */
     tim->PWM_CCR = ccr;
     if (--nr_pulses)
-        timer_set(&spk_timer, stk_deadline(next));
+        timer_set(&spk_timer, spk_timer.deadline + next);
 }
 
 void speaker_init(void)
@@ -74,7 +74,7 @@ void speaker_pulses(uint8_t nr)
 {
     /* Quadratic scaling of pulse width seems to give linear-ish volume. */
     nr_pulses = nr*2;
-    timer_set(&spk_timer, stk_now());
+    timer_set(&spk_timer, time_now());
 }
 
 /*

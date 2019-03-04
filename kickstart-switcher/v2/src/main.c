@@ -37,7 +37,7 @@ static void canary_check(void)
 }
 
 /* Sample the reset line this frequently. */
-#define TICK_PERIOD stk_ms(50)
+#define TICK_PERIOD time_ms(50)
 static struct timer tick_timer;
 
 /* Number of image switches that main thread has pending to apply. */
@@ -64,7 +64,7 @@ static void tick_fn(void *data)
         reset_ticks = 0;
     }
 
-    timer_set(&tick_timer, stk_diff(tick_timer.deadline, TICK_PERIOD));
+    timer_set(&tick_timer, tick_timer.deadline + TICK_PERIOD);
 }
 
 /* Address the specified ROM bank on high-order EPROM address pins. */
@@ -95,7 +95,7 @@ int main(void)
     canary_init();
 
     stm32_init();
-    timers_init();
+    time_init();
     recall_init();
     console_init();
     speaker_init();
@@ -122,7 +122,7 @@ int main(void)
     config_init();
 
     timer_init(&tick_timer, tick_fn, NULL);
-    timer_set(&tick_timer, stk_deadline(TICK_PERIOD));
+    timer_set(&tick_timer, time_now() + TICK_PERIOD);
 
     kickstart = recall_get();
     image_set(kickstart);

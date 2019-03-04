@@ -19,6 +19,7 @@
 #include "stm32f10x.h"
 #include "intrinsics.h"
 
+#include "time.h"
 #include "timer.h"
 
 /*

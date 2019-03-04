@@ -56,6 +56,8 @@ static unsigned int console_get_uint(void)
     uint8_t c, p[8];
     unsigned int i = 0, j, r;
 
+    console_barrier();
+
     c = usart1->dr; /* clear UART_SR_RXNE */    
     for (;;) {
         while (!(usart1->sr & USART_SR_RXNE))

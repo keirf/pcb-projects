@@ -9,8 +9,6 @@
  * See the file COPYING for more details, or visit <http://unlicense.org>.
  */
 
-#define FLASH_PAGE_SIZE 1024
-
 static uint16_t * const recall_map = (uint16_t *)0x08008000;
 const unsigned int recall_nr_words = 32768/2;
 

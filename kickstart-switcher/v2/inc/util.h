@@ -71,6 +71,7 @@ int printk(const char *format, ...)
 
 void console_init(void);
 void console_sync(void);
+void console_barrier(void);
 
 void speaker_init(void);
 void speaker_pulses(uint8_t nr);
