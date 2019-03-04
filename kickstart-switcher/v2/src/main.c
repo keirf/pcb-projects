@@ -133,9 +133,9 @@ int main(void)
             continue;
         kickstart = ((kickstart + nr_switches - 1) % ksw_config.nr_images) + 1;
         nr_switches = 0;
-        recall_set(kickstart);
         speaker_pulses(kickstart);
         image_set(kickstart);
+        recall_set(kickstart);
     }
 
     return 0;

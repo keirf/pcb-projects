@@ -9,6 +9,11 @@
  * See the file COPYING for more details, or visit <http://unlicense.org>.
  */
 
+/*
+ * Time to write one word of Flash: ~55us
+ * Time to erase one page of Flash: ~45ms
+ */
+
 static uint16_t * const recall_map = (uint16_t *)0x08008000;
 const unsigned int recall_nr_words = 32768/2;
 
@@ -20,20 +25,6 @@ static bool_t recall_enabled(void)
     return ksw_config.image_recall ^ recall_enable_invert;
 }
 
-static unsigned int find_first_clear(uint16_t *map, unsigned int nr_words)
-{
-    uint16_t *l = map;
-    uint16_t *h = map + nr_words - 1;
-    uint16_t *m;
-
-    do {
-        m = l + (h-l)/2;
-        if (*m == 0) l = m = m+1; else h = m-1;
-    } while (l <= h);
-
-    return m - map;
-}
-
 void recall_erase(void)
 {
     uint32_t p = (uint32_t)recall_map;
@@ -43,54 +34,34 @@ void recall_erase(void)
         p += FLASH_PAGE_SIZE;
         todo -= FLASH_PAGE_SIZE;
     }
-    recall_off = 0;
-}
-
-static bool_t recall_increment(void)
-{
-    uint16_t x = 0;
-    if (recall_off >= recall_nr_words)
-        return FALSE; /* map full */
-    fpec_write(&x, 2, (uint32_t)&recall_map[recall_off]);
-    recall_off++;
-    return TRUE;
 }
 
 void recall_set(unsigned int image)
 {
-    unsigned int old = recall_off % ksw_config.nr_images;
-    unsigned int new = image - 1;
+    uint16_t x = image;
 
     if (!recall_enabled())
         return;
 
-    if (old > new)
-        new += ksw_config.nr_images;
+    if ((recall_off % (FLASH_PAGE_SIZE/2)) == 0)
+        fpec_page_erase((uint32_t)&recall_map[recall_off]);
 
-    while (old++ != new) {
-        if (!recall_increment()) {
-            /* map full: erase and re-start */
-            recall_erase();
-            old = 0;
-            new = image - 1;
-        }
-    }
+    recall_off = (recall_off == 0) ? recall_nr_words-1 : recall_off-1;
+    fpec_write(&x, 2, (uint32_t)&recall_map[recall_off]);
 }
 
 unsigned int recall_get(void)
 {
-    unsigned int image = 0;
-
     fpec_init();
 
-    recall_off = find_first_clear(recall_map, recall_nr_words);
+    if (recall_enabled()) {
+        for (recall_off = 0; recall_off < recall_nr_words; recall_off++)
+            if (recall_map[recall_off] != 0xffffu)
+                return recall_map[recall_off];
+    }
 
-    if (recall_enabled())
-        image = recall_off % ksw_config.nr_images;
-    else if (recall_off != 0)
-        recall_erase();
-
-    return image + 1;
+    recall_off = recall_nr_words - 1;
+    return 1;
 }
 
 void recall_init(void)
