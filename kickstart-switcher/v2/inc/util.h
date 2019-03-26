@@ -86,12 +86,13 @@ void recall_erase(void);
 /* Configuration. */
 void config_init(void);
 extern struct ksw_config {
-    uint8_t reset_delays[3]; /* reset delay to switch (/0.05s) */
-    uint8_t volumes[3];      /* beeper volume */
-    uint8_t nr_images;       /* # images to cycle between */
-    uint8_t image_map[8];    /* which rom bank addressed by each image # */
-    uint8_t menu_rom_bank;   /* which rom bank addressed during menu */
-    uint8_t image_recall;    /* remember last image across reset/power-off? */
+    uint16_t reset_delays[3]; /* reset delay to switch (ms) */
+    uint16_t long_beep;       /* long beep length (ms) */
+    uint8_t volumes[3];       /* beeper volume */
+    uint8_t nr_images;        /* # images to cycle between */
+    uint8_t image_map[8];     /* which rom bank addressed by each image # */
+    uint8_t menu_rom_bank;    /* which rom bank addressed during menu */
+    uint8_t image_recall;     /* remember last image across reset/power-off? */
     uint16_t crc16_ccitt;
 } ksw_config;
 

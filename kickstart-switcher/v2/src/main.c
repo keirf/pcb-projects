@@ -37,7 +37,7 @@ static void canary_check(void)
 }
 
 /* Sample the reset line this frequently. */
-#define TICK_PERIOD time_ms(50)
+#define TICK_MS 50
 static struct timer tick_timer;
 
 /* Number of image switches that main thread has pending to apply. */
@@ -48,23 +48,24 @@ static unsigned int switch_delay = 1; /* medium delay */
 
 static void tick_fn(void *data)
 {
-    /* How many consecutive samples have been in reset? */
-    static unsigned int reset_ticks = 0;
+    /* For how many milliseconds have consecutive samples been in reset? */
+    static unsigned int reset_ms = 0;
 
     /* Are we in reset now (ie. PA8 low)? */
     if (!gpio_read_pin(gpioa, 8)) {
         /* If so, update our sample count and check if we're at threshold. */
-        if (++reset_ticks == (ksw_config.reset_delays[switch_delay])) {
+        reset_ms += TICK_MS;
+        if (reset_ms >= (ksw_config.reset_delays[switch_delay])) {
             /* If we're at threshold inform main thread and restart count. */
             nr_switches++;
-            reset_ticks = 0;
+            reset_ms = 0;
         }
     } else {
         /* We're not in reset. Clear the count. */
-        reset_ticks = 0;
+        reset_ms = 0;
     }
 
-    timer_set(&tick_timer, tick_timer.deadline + TICK_PERIOD);
+    timer_set(&tick_timer, tick_timer.deadline + time_ms(TICK_MS));
 }
 
 /* Address the specified ROM bank on high-order EPROM address pins. */
@@ -122,7 +123,7 @@ int main(void)
     config_init();
 
     timer_init(&tick_timer, tick_fn, NULL);
-    timer_set(&tick_timer, time_now() + TICK_PERIOD);
+    timer_set(&tick_timer, time_now() + time_ms(TICK_MS));
 
     kickstart = recall_get();
     image_set(kickstart);

@@ -11,7 +11,8 @@
 
 const static struct ksw_config *flash_config = (struct ksw_config *)0x08007c00;
 const static struct ksw_config dfl_config = {
-    .reset_delays = { 2*20, 3*20, 4*20 }, /* 2s, 3s, 4s */
+    .reset_delays = { 2000, 3000, 4000 },
+    .long_beep = 100,
     .volumes = { 10, 30, 80 },
     .nr_images = 2,
     .image_map = { 0, 1, 2, 3, 4, 5, 6, 7 },
@@ -29,7 +30,7 @@ static void config_printk(const struct ksw_config *conf)
     for (i = 0; i < conf->nr_images-1; i++)
         printk("%u,", conf->image_map[i]);
     printk("%u]\n", conf->image_map[i]);
-    printk(" Reset delays (/0.05s): [%u,%u,%u]\n",
+    printk(" Reset delays (ms): [%u,%u,%u]\n",
            conf->reset_delays[0],
            conf->reset_delays[1],
            conf->reset_delays[2]);
@@ -37,6 +38,8 @@ static void config_printk(const struct ksw_config *conf)
            conf->volumes[0],
            conf->volumes[1],
            conf->volumes[2]);
+    printk(" Speaker long beep: %ums (%sabled)\n", conf->long_beep,
+           conf->long_beep ? "En" : "Dis");
     printk(" Image recall: %sabled\n", conf->image_recall ? "En" : "Dis");
     printk(" Menu ROM bank: %u\n\n", conf->menu_rom_bank);
 }
@@ -94,7 +97,7 @@ void config_init(void)
     unsigned int x;
     int i;
 
-    printk("\n** Kickstart Switcher v2.6 **\n");
+    printk("\n** Kickstart Switcher v2.7 **\n");
     printk("** Keir Fraser <keir.xen@gmail.com>\n");
     printk("** https://github.com/keirf/PCB-Projects\n");
 
@@ -124,12 +127,13 @@ void config_init(void)
         printk(" 2: Image map\n");
         printk(" 3: Reset delays\n");
         printk(" 4: Speaker volumes\n");
-        printk(" 5: Image recall\n");
-        printk(" 6: Menu ROM bank\n");
+        printk(" 5: Speaker long beep\n");
+        printk(" 6: Image recall\n");
+        printk(" 7: Menu ROM bank\n");
         printk(" --\n");
-        printk(" 7: Load defaults\n");
-        printk(" 8: Discard & reset\n");
-        printk(" 9: Save & reset\n");
+        printk(" 10: Load defaults\n");
+        printk(" 11: Discard & reset\n");
+        printk(" 12: Save & reset\n");
         printk(" --\n");
         printk(" 99: STM32 System Bootloader\n");
 
@@ -157,9 +161,9 @@ void config_init(void)
             for (i = 0; i < 3; i++) {
                 do {
                     const static char *name[] = { "Short", "Default", "Long" };
-                    printk("%s delay (0-255): ", name[i]);
+                    printk("%s delay (ms): ", name[i]);
                     x = console_get_uint();
-                } while (x > 255);
+                } while (x > 65535);
                 ksw_config.reset_delays[i] = x;
             }
             break;
@@ -175,12 +179,19 @@ void config_init(void)
             break;
         case 5:
             do {
+                printk("Speaker long beep (ms, 0=Disable): ");
+                x = console_get_uint();
+            } while (x > 65535);
+            ksw_config.long_beep = x;
+            break;
+        case 6:
+            do {
                 printk("Image recall (0=Disable, 1=Enable): ");
                 x = console_get_uint();
             } while (x > 1);
             ksw_config.image_recall = x;
             break;
-        case 6:
+        case 7:
             do {
                 printk("Menu ROM bank (0-7): ");
                 x = console_get_uint();
@@ -188,13 +199,13 @@ void config_init(void)
             ksw_config.menu_rom_bank = x;
             rom_bank_set(ksw_config.menu_rom_bank);
             break;
-        case 7:
+        case 10:
             ksw_config = dfl_config;
             break;
-        case 8:
+        case 11:
             system_reset();
             break;
-        case 9:
+        case 12:
             config_write_flash(&ksw_config);
             system_reset();
             break;
