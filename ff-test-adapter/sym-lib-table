@@ -1,0 +1,3 @@
+(sym_lib_table
+  (lib (name ff-test-rescue)(type Legacy)(uri ${KIPRJMOD}/ff-test-rescue.lib)(options "")(descr ""))
+)
