@@ -5,7 +5,7 @@
 
 - [**Kickstart Switcher**](https://github.com/keirf/PCB-Projects/wiki/Kickstart-Switcher-v2)
   Assembly instructions and installation guide
-- [**EPROM Adapter**](https://github.com/keirf/PCB-Projects/wiki/EPROM-Adapter)
+- [**EPROM Adapter**](https://github.com/keirf/PCB-Projects/wiki/EPROM-Adapter-v4)
   Usage instructions for all versions of this adapter
 
 The old Kickstart switcher documentation is
