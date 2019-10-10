@@ -17,6 +17,7 @@
 #define PWR volatile struct pwr * const
 #define BKP volatile struct bkp * const
 #define RCC volatile struct rcc * const
+#define IWDG volatile struct iwdg * const
 #define GPIO volatile struct gpio * const
 #define AFIO volatile struct afio * const
 #define EXTI volatile struct exti * const
@@ -25,6 +26,9 @@
 #define SPI volatile struct spi * const
 #define I2C volatile struct i2c * const
 #define USART volatile struct usart * const
+#define USB volatile struct usb * const
+#define USB_BUFD volatile struct usb_bufd * const
+#define USB_BUF volatile struct uint32_t * const
 #define USB_OTG volatile struct usb_otg * const
 
 /* C-accessible registers. */
@@ -35,6 +39,7 @@ static FLASH flash = (struct flash *)FLASH_BASE;
 static PWR pwr = (struct pwr *)PWR_BASE;
 static BKP bkp = (struct bkp *)BKP_BASE;
 static RCC rcc = (struct rcc *)RCC_BASE;
+static IWDG iwdg = (struct iwdg *)IWDG_BASE;
 static GPIO gpioa = (struct gpio *)GPIOA_BASE;
 static GPIO gpiob = (struct gpio *)GPIOB_BASE;
 static GPIO gpioc = (struct gpio *)GPIOC_BASE;
@@ -61,6 +66,9 @@ static I2C i2c2 = (struct i2c *)I2C2_BASE;
 static USART usart1 = (struct usart *)USART1_BASE;
 static USART usart2 = (struct usart *)USART2_BASE;
 static USART usart3 = (struct usart *)USART3_BASE;
+static USB usb = (struct usb *)USB_BASE;
+static USB_BUFD usb_bufd = (struct usb_bufd *)USB_BUF_BASE;
+static USB_BUF usb_buf = (struct uint32_t *)USB_BUF_BASE;
 static USB_OTG usb_otg = (struct usb_otg *)USB_OTG_BASE;
 
 /* NVIC table */

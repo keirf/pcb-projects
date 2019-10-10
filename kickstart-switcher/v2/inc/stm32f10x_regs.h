@@ -173,7 +173,7 @@ struct rcc {
     uint32_t apb1enr;  /* 1C: APB1 peripheral clock enable */
     uint32_t bdcr;     /* 20: Backup domain control */
     uint32_t csr;      /* 24: Control/status */
-    uint32_t ahbstr;   /* 28: AHB peripheral clock reset */
+    uint32_t ahbrstr;  /* 28: AHB peripheral clock reset */
     uint32_t cfgr2;    /* 2C: Clock configuration 2 */
 };
 
@@ -220,6 +220,7 @@ struct rcc {
 #define RCC_APB1ENR_BKPEN    (1u<<27)
 #define RCC_APB1ENR_CAN2EN   (1u<<26)
 #define RCC_APB1ENR_CAN1EN   (1u<<25)
+#define RCC_APB1ENR_USBEN    (1u<<23)
 #define RCC_APB1ENR_I2C2EN   (1u<<22)
 #define RCC_APB1ENR_I2C1EN   (1u<<21)
 #define RCC_APB1ENR_USART5EN (1u<<20)
@@ -248,7 +249,30 @@ struct rcc {
 #define RCC_APB2ENR_IOPAEN   (1u<< 2)
 #define RCC_APB2ENR_AFIOEN   (1u<< 0)
 
+#define RCC_CSR_LPWRRSTF     (1u<<31)
+#define RCC_CSR_WWDGRSTF     (1u<<30)
+#define RCC_CSR_IWDGRSTF     (1u<<29)
+#define RCC_CSR_SFTRSTF      (1u<<28)
+#define RCC_CSR_PORRSTF      (1u<<27)
+#define RCC_CSR_PINRSTF      (1u<<26)
+#define RCC_CSR_RMVF         (1u<<24)
+#define RCC_CSR_LSIRDY       (1u<< 1)
+#define RCC_CSR_LSION        (1u<< 0)
+
+#define RCC_AHBRSTR_ETHMACRST (1u<<14)
+#define RCC_AHBRSTR_OTGFSRST (1u<<12)
+
 #define RCC_BASE 0x40021000
+
+/* Independent Watchdog */
+struct iwdg {
+    uint32_t kr;   /* 00: Key */
+    uint32_t pr;   /* 04: Prescaler */
+    uint32_t rlr;  /* 08: Reload */
+    uint32_t sr;   /* 0C: Status */
+};
+
+#define IWDG_BASE 0x40003000
 
 /* General-purpose I/O */
 struct gpio {
@@ -410,7 +434,16 @@ struct tim {
 #define TIM_CR1_CEN          (1u<<0)
 
 #define TIM_CR2_TI1S         (1u<<7)
+#define TIM_CR2_MMS(x)       ((x)<<4)
 #define TIM_CR2_CCDS         (1u<<3)
+
+#define TIM_SMCR_ETP         (1u<<15)
+#define TIM_SMCR_ETC         (1u<<14)
+#define TIM_SMCR_ETPS(x)     ((x)<<12)
+#define TIM_SMCR_ETF(x)      ((x)<<8)
+#define TIM_SMCR_MSM         (1u<<7)
+#define TIM_SMCR_TS(x)       ((x)<<4)
+#define TIM_SMCR_SMS(x)      ((x)<<0)
 
 #define TIM_DIER_TDE         (1u<<14)
 #define TIM_DIER_CC4DE       (1u<<12)
@@ -693,6 +726,85 @@ struct usart {
 #define USART1_BASE 0x40013800
 #define USART2_BASE 0x40004400
 #define USART3_BASE 0x40004800
+
+/* USB Full Speed */
+struct usb {
+    uint32_t epr[8];   /* 4*n: Endpoint n */
+    uint32_t rsvd[8];
+    uint32_t cntr;     /* 40: Control */
+    uint32_t istr;     /* 44: Interrupt status */
+    uint32_t fnr;      /* 48: Frame number */
+    uint32_t daddr;    /* 4C: Device address */
+    uint32_t btable;   /* 50: Buffer table address */
+};
+
+struct usb_bufd {
+    uint32_t addr_tx;  /* 00: Transmission buffer address */
+    uint32_t count_tx; /* 04: Transmission byte count */
+    uint32_t addr_rx;  /* 08: Reception buffer address */
+    uint32_t count_rx; /* 0C: Reception byte count */
+};
+
+#define USB_EPR_CTR_RX       (1u<<15)
+#define USB_EPR_DTOG_RX      (1u<<14)
+#define USB_EPR_STAT_RX(x)   ((x)<<12)
+#define USB_EPR_SETUP        (1u<<11)
+#define USB_EPR_EP_TYPE(x)   ((x)<<9)
+#define USB_EPR_EP_KIND_DBL_BUF (1<<8)    /* USB_EP_TYPE_BULK */
+#define USB_EPR_EP_KIND_STATUS_OUT (1<<8) /* USB_EP_TYPE_CONTROL */
+#define USB_EPR_CTR_TX       (1u<< 7)
+#define USB_EPR_DTOG_TX      (1u<< 6)
+#define USB_EPR_STAT_TX(x)   ((x)<<4)
+#define USB_EPR_EA(x)        ((x)<<0)
+
+#define USB_STAT_DISABLED    (0u)
+#define USB_STAT_STALL       (1u)
+#define USB_STAT_NAK         (2u)
+#define USB_STAT_VALID       (3u)
+#define USB_STAT_MASK        (3u)
+
+#define USB_EP_TYPE_BULK     (0u)
+#define USB_EP_TYPE_CONTROL  (1u)
+#define USB_EP_TYPE_ISO      (2u)
+#define USB_EP_TYPE_INTERRUPT (3u)
+#define USB_EP_TYPE_MASK     (3u)
+
+#define USB_CNTR_CTRM        (1u<<15)
+#define USB_CNTR_PMAOVRM     (1u<<14)
+#define USB_CNTR_ERRM        (1u<<13)
+#define USB_CNTR_WKUPM       (1u<<12)
+#define USB_CNTR_SUSPM       (1u<<11)
+#define USB_CNTR_RESETM      (1u<<10)
+#define USB_CNTR_SOFM        (1u<< 9)
+#define USB_CNTR_ESOFM       (1u<< 8)
+#define USB_CNTR_RESUME      (1u<< 4)
+#define USB_CNTR_FSUSP       (1u<< 3)
+#define USB_CNTR_LP_MODE     (1u<< 2)
+#define USB_CNTR_PDWN        (1u<< 1)
+#define USB_CNTR_FRES        (1u<< 0)
+
+#define USB_ISTR_CTR         (1u<<15)
+#define USB_ISTR_PMAOVR      (1u<<14)
+#define USB_ISTR_ERR         (1u<<13)
+#define USB_ISTR_WKUP        (1u<<12)
+#define USB_ISTR_SUSP        (1u<<11)
+#define USB_ISTR_RESET       (1u<<10)
+#define USB_ISTR_SOF         (1u<< 9)
+#define USB_ISTR_ESOF        (1u<< 8)
+#define USB_ISTR_DIR         (1u<< 4)
+#define USB_ISTR_GET_EP_ID(x) ((x)&0xf)
+
+#define USB_FNR_RXDP         (1u<<15)
+#define USB_FNR_RXDM         (1u<<14)
+#define USB_FNR_LCK          (1u<<13)
+#define USB_FNR_GET_LSOF(x)  (((x)>>11)&3)
+#define USB_FNR_GET_FN(x)    ((x)&0x7ff)
+
+#define USB_DADDR_EF         (1u<< 7)
+#define USB_DADDR_ADD(x)     ((x)<<0)
+
+#define USB_BASE     0x40005c00
+#define USB_BUF_BASE 0x40006000
 
 /* USB On-The-Go Full Speed interface */
 struct usb_otg {
