@@ -1,0 +1,3 @@
+(sym_lib_table
+  (lib (name GW-rescue)(type Legacy)(uri ${KIPRJMOD}/GW-rescue.lib)(options "")(descr ""))
+)
