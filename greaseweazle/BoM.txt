@@ -1,7 +1,10 @@
 REF         PART DESCRIPTION
 ===         ================
-R1 (USBPU)  1K5 5% (0805)
+R1 (USBPU)  1K5 5% (0805) [*]
 R2-R5       1K0 5% (0805)
 P5          4x1 2.54mm Pin Header
 P7          17x2 2.54mm Pin Header
 U1          STM32F103C8 Blue Pill
+
+[*] Populate R1 (USBPU) only if the Blue Pill's pull-up reistsor is
+removed (usually R10, but may vary according to specific Pill PCB).
