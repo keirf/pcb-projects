@@ -9,10 +9,10 @@
  * See the file COPYING for more details, or visit <http://unlicense.org>.
  */
 
-/* Timer 4, channel 3, PB8 */
+/* Timer 2, channel 3, PB10 */
 #define gpio_spk gpiob
-#define PIN_SPK 8
-#define tim tim4
+#define PIN_SPK 10
+#define tim tim2
 #define PWM_CCR ccr3
 
 /* Period = 500us -> Frequency = 2000Hz */
@@ -57,7 +57,7 @@ void speaker_init(void)
     }
    
     /* Set up timer, switch speaker off. PWM output is active high. */
-    rcc->apb1enr |= RCC_APB1ENR_TIM4EN;
+    rcc->apb1enr |= RCC_APB1ENR_TIM2EN;
     tim->arr = ARR;
     tim->psc = SYSCLK_MHZ - 1; /* tick at 1MHz */
     tim->ccmr2 = (TIM_CCMR2_CC3S(TIM_CCS_OUTPUT) |

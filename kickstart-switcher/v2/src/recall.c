@@ -14,8 +14,8 @@
  * Time to erase one page of Flash: ~45ms
  */
 
-static uint16_t * const recall_map = (uint16_t *)0x08008000;
-const unsigned int recall_nr_words = 32768/2;
+static uint16_t * const recall_map = (uint16_t *)0x08002000;
+const unsigned int recall_nr_words = (0x8007c00 - 0x8002000) / 2;
 
 static unsigned int recall_off;
 static bool_t recall_enable_invert;
