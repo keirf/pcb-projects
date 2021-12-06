@@ -41,7 +41,7 @@ void *memmove(void *dest, const void *src, size_t n)
 
 int strcmp(const char *s1, const char *s2)
 {
-    return strncmp(s1, s2, ~0);
+    return strncmp(s1, s2, INT_MAX);
 }
 
 int strncmp(const char *s1, const char *s2, size_t n)
